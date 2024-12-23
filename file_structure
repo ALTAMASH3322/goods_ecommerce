@@ -1,0 +1,106 @@
+ecommerce-platform/
+├── backend/                # Flask backend
+│   ├── app/                # Main application directory
+│   │   ├── __init__.py     # Flask app initialization
+│   │   ├── models/         # Database models
+│   │   │   ├── user.py
+│   │   │   ├── product.py
+│   │   │   ├── order.py
+│   │   │   ├── support.py
+│   │   │   ├── role.py
+│   │   │   ├── permission.py
+│   │   │   └── seller.py
+│   │   ├── routes/         # API routes
+│   │   │   ├── user_routes.py
+│   │   │   ├── product_routes.py
+│   │   │   ├── order_routes.py
+│   │   │   ├── support_routes.py
+│   │   │   ├── role_routes.py
+│   │   │   └── admin_routes.py
+│   │   ├── services/       # Business logic (e.g., order processing, seller approval)
+│   │   │   ├── user_service.py
+│   │   │   ├── product_service.py
+│   │   │   ├── order_service.py
+│   │   │   ├── support_service.py
+│   │   │   ├── role_service.py
+│   │   │   └── admin_service.py
+│   │   ├── utils/          # Helper functions (e.g., email sending, validation)
+│   │   │   ├── email_utils.py
+│   │   │   ├── validation_utils.py
+│   │   │   └── logger.py
+│   │   ├── config.py       # Configuration settings (e.g., database URL, secret keys)
+│   │   ├── database.py     # Database setup (e.g., SQLAlchemy initialization)
+│   │   └── middleware.py   # Custom middleware (e.g., authentication, logging)
+│   ├── tests/              # Unit and integration tests
+│   │   ├── test_users.py
+│   │   ├── test_products.py
+│   │   ├── test_orders.py
+│   │   ├── test_support.py
+│   │   ├── test_roles.py
+│   │   └── test_admin.py
+│   ├── requirements.txt    # Python dependencies
+│   ├── run.py              # Entry point to run the Flask app
+│   └── .env                # Environment variables (e.g., database credentials)
+│
+├── frontend/               # React frontend
+│   ├── public/             # Static files (e.g., index.html, favicon)
+│   ├── src/                # Source code
+│   │   ├── components/     # Reusable UI components
+│   │   │   ├── Header.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── OrderSummary.jsx
+│   │   │   ├── SupportTicketForm.jsx
+│   │   │   └── ...
+│   │   ├── pages/          # Application pages
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── ProductPage.jsx
+│   │   │   ├── CartPage.jsx
+│   │   │   ├── OrderPage.jsx
+│   │   │   ├── SupportPage.jsx
+│   │   │   ├── AdminDashboard.jsx
+│   │   │   ├── SellerDashboard.jsx
+│   │   │   └── ...
+│   │   ├── services/       # API service calls (e.g., axios for backend communication)
+│   │   │   ├── userService.js
+│   │   │   ├── productService.js
+│   │   │   ├── orderService.js
+│   │   │   ├── supportService.js
+│   │   │   ├── roleService.js
+│   │   │   └── adminService.js
+│   │   ├── hooks/          # Custom React hooks (e.g., useAuth, useCart)
+│   │   │   ├── useAuth.js
+│   │   │   ├── useCart.js
+│   │   │   └── ...
+│   │   ├── context/        # React context for state management (e.g., AuthContext, CartContext)
+│   │   │   ├── AuthContext.js
+│   │   │   ├── CartContext.js
+│   │   │   └── ...
+│   │   ├── styles/         # Global styles and themes
+│   │   │   ├── global.css
+│   │   │   ├── theme.js
+│   │   │   └── ...
+│   │   ├── App.jsx         # Main application component
+│   │   ├── index.js        # Entry point for React app
+│   │   └── routes.js       # React Router configuration
+│   ├── package.json        # Frontend dependencies and scripts
+│   ├── .env                # Environment variables (e.g., API base URL)
+│   └── README.md           # Frontend documentation
+│
+├── shared/                 # Shared resources (e.g., API schemas, constants)
+│   ├── api_schemas/        # API request/response schemas (e.g., JSON schemas)
+│   │   ├── user_schema.json
+│   │   ├── product_schema.json
+│   │   ├── order_schema.json
+│   │   ├── support_schema.json
+│   │   ├── role_schema.json
+│   │   └── admin_schema.json
+│   ├── constants/          # Shared constants (e.g., error messages, role names)
+│   │   ├── error_messages.js
+│   │   ├── roles.js
+│   │   └── ...
+│   └── README.md           # Documentation for shared resources
+│
+├── .gitignore              # Files and directories to ignore in Git
+├── README.md               # Project overview and setup instructions
+└── docker-compose.yml      # Docker configuration for running the app
