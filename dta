@@ -1,0 +1,195 @@
+Database Schema with Roles and Permissions
+1. Users Table
+Stores information about all users (buyers, sellers, support, admin).
+
+Includes a role_id to associate users with roles.
+
+Ensures email and mobile number are unique.
+
+sql
+Copy
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    mobile_number VARCHAR(20) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    address VARCHAR(255),
+    city VARCHAR(50),
+    state VARCHAR(50),
+    zip_code VARCHAR(20),
+    country VARCHAR(50),
+    role_id INT NOT NULL, -- Foreign key to Roles table
+    is_verified BOOLEAN DEFAULT FALSE, -- Email verification status
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (role_id) REFERENCES Roles(role_id)
+);
+2. Roles Table
+Defines the roles available in the system (e.g., buyer, seller, support, admin).
+
+sql
+Copy
+CREATE TABLE Roles (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT
+);
+3. Permissions Table
+Defines the permissions available in the system (e.g., add_product, cancel_order, view_analytics, etc.).
+
+sql
+Copy
+CREATE TABLE Permissions (
+    permission_id INT AUTO_INCREMENT PRIMARY KEY,
+    permission_name VARCHAR(50) NOT NULL UNIQUE,
+    description TEXT
+);
+4. Role_Permissions Table
+Maps roles to permissions. Each role can have multiple permissions.
+
+sql
+Copy
+CREATE TABLE Role_Permissions (
+    role_id INT,
+    permission_id INT,
+    PRIMARY KEY (role_id, permission_id),
+    FOREIGN KEY (role_id) REFERENCES Roles(role_id),
+    FOREIGN KEY (permission_id) REFERENCES Permissions(permission_id)
+);
+5. Sellers Table
+Stores additional information specific to sellers.
+
+sql
+Copy
+CREATE TABLE Sellers (
+    seller_id INT PRIMARY KEY,
+    business_name VARCHAR(100) NOT NULL,
+    business_address VARCHAR(255),
+    business_email VARCHAR(100),
+    business_phone VARCHAR(20),
+    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('Pending', 'Approved', 'Suspended') DEFAULT 'Pending',
+    FOREIGN KEY (seller_id) REFERENCES Users(user_id)
+);
+6. Products Table
+Stores information about the products available for sale.
+
+sql
+Copy
+CREATE TABLE Products (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    stock_quantity INT NOT NULL,
+    category_id INT,
+    brand_id INT,
+    seller_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id),
+    FOREIGN KEY (brand_id) REFERENCES Brands(brand_id),
+    FOREIGN KEY (seller_id) REFERENCES Sellers(seller_id)
+);
+7. Orders Table
+Stores information about customer orders.
+
+sql
+Copy
+CREATE TABLE Orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    shipping_address VARCHAR(255),
+    billing_address VARCHAR(255),
+    payment_id INT,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (payment_id) REFERENCES Payments(payment_id)
+);
+8. Support_Tickets Table
+Stores support tickets raised by users or sellers.
+
+sql
+Copy
+CREATE TABLE Support_Tickets (
+    ticket_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    subject VARCHAR(255) NOT NULL,
+    description TEXT,
+    status ENUM('Open', 'In Progress', 'Closed') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+9. Support_Ticket_Responses Table
+Stores responses to support tickets.
+
+sql
+Copy
+CREATE TABLE Support_Ticket_Responses (
+    response_id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id INT,
+    user_id INT,
+    response_text TEXT,
+    response_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticket_id) REFERENCES Support_Tickets(ticket_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+Roles and Permissions
+Roles
+Buyer
+
+Permissions:
+
+place_order
+
+add_to_wishlist
+
+review_product
+
+raise_support_ticket
+
+Seller
+
+Permissions:
+
+add_product
+
+edit_product
+
+delete_product
+
+view_sales_report
+
+Support
+
+Permissions:
+
+place_order_on_behalf
+
+cancel_order
+
+reset_user_data
+
+view_support_tickets
+
+respond_to_support_tickets
+
+Admin
+
+Permissions:
+
+All permissions of Support
+
+view_analytics
+
+assign_support_agent
+
+approve_seller
+
+suspend_seller
